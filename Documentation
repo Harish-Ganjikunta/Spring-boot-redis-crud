@@ -1,0 +1,287 @@
+What is Redis?
+Redis is an open source(BSD licensed) in-memory remote data structure store(database) that offers high performance, replication, and a unique data model. The full form of Redis is Remote Directory Server. Moreover, we can use it in multiple forms. Redis provides data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs, geospatial indexes, and streams.
+
+You can use Redis from most programming languages. Redis is written in ANSI C and works in most POSIX systems like Linux, *BSD, and OS X, without external dependencies. Linux and OS X are the two operating systems where Redis is developed and tested the most.
+
+What is Redis Database?
+Redis is a NoSQL DB of type Key-Value stores. In fact, Redis Database is an in-memory database that persists on disk. It means when we use Redis Database, we occupy a memory on the disk to use as a Database. The data model is key-value, but many several kind of values are supported such as Strings, Lists, Sets, Sorted Sets, Hashes, Streams, HyperLogLogs, Bitmaps etc.
+
+How does Redis database work?
+Unlike other databases such as MongoDB, PostgreSQL, Oracle, Cassandra that store data on disk or SSDs, all Redis data resides in-memory. As it doesn’t need to access disks, it avoids seek time delays. As a result, it can access data in microseconds. Each Redis database instance has a key space linked with it which is nothing but a wrapper on hash table implementation. Whatever data Redis stores such as string, redis set or redis hash, everything is saved inside the hash tables.
+
+What are the benefits of Redis?
+Below are some of the important benefits that we can have from Redis:
+
+1) In-memory data store
+2) Flexible data structures : like Strings, Lists, Sets, Sorted Sets, Hashes, Bitmaps, HyperLoglogs
+3) Simplicity and ease-of-use
+4) High availability and scalability
+5) Easy for Replication and persistence
+6) High Extensibility
+
+What is NoSQL DB? What are some popular examples of NoSQL databases?
+NoSQL databases are those who store data in a format other than relational tables. These databases can store relational data, but they just store it differently than relational databases do.  Some examples of popular NoSQL databases are MongoDB, CouchDB, CouchBase, Cassandra, HBase, Redis, Riak, Neo4J. MongoDB, CouchDB, CouchBase are document-oriented NoSQL databases, Redis and Riak are key-value stores, Cassandra and HBase are column family stores and Neo4J is a graph database.
+
+SQL data models allow relations by joining tables. On the other hand, NoSQL data models allow related data to be nested within a single data structure. Some people in the industry say the term “NoSQL” stands for “non SQL” while others say it stands for “not only SQL”.
+
+If you want to learn more on NoSQL databases and have a good understanding of them, kindly visit a separate article on ‘All About NoSQL Databases‘.
+
+How many types of NoSQL DB are there?
+Key-Values Stores, Wide-column Stores, Document Databases, Graph Databases are the types of NoSQL Databases.
+
+Key-Values Stores
+The Key-Values Stores are simplest and easiest to implement. They internally use a hash table where there is a unique key and a pointer to a particular item of data. Key-value Stores are great for use cases where you need to store large amounts of data, but you don’t need to perform complex queries to retrieve it. Examples: Tokyo Cabinet/Tyrant, Redis, DynanoDB, Voldemort, Oracle BDB, Amazon SimpleDB, Riak.
+
+Wide-column Stores
+They store data in tables, rows, and dynamic columns. Here each row doesn’t need to have the same columns. Therefore, they are better in flexibility over relational databases. Also, these were created to store and process very large amounts of data distributed over many machines. Wide-column stores are suitable for storing Internet of Things data and user profile data. Examples: Cassandra, HBase
+
+Document Databases
+They are similar to key-value stores and inspired by Lotus Notes. Document Databases store data in documents like JSON objects. Further JSON can store values in a variety of types like Strings, Numbers, Booleans, Arrays or Objects. They also support powerful query languages. Hence, they can be used as a general purpose database. According to DB-engines ranking, MongoDB is consistently ranked as the world’s most popular NoSQL database. Examples: MongoDB, CouchDB
+
+Graph Databases
+They use a flexible graph model which, again, can scale across multiple machines. Graph Databases store data in nodes and edges. Nodes typically store information about people, places, and things while edges store information about the relationships between the nodes. They are useful in use cases where you need to traverse relationships to look for patterns such as social networks, fraud detection, and recommendation engines. Examples: Neo4J, JanusGraph, InfoGrid, Infinite Graph
+
+What are the benefits of using a NoSQL Database?
+NoSQL databases are more flexible and scalable, faster, reliable, distributed, schema-free architecture, easy replication support, simple API, support for big data etc. NoSQL databases can often perform better than SQL(relational databases) for your use case. For example, if you’re using a document database and are storing all the information about an object in the same document (so that it matches the objects in your code), the database only needs to go to one place for those queries. In a SQL database, the same query would likely involve joining multiple tables and records, which can dramatically impact performance while also slowing down how quickly developers write code.
+
+What are the Drawbacks of a NoSQL Database?
+One of the recognized drawbacks of NoSQL databases is that they don’t support ACID (atomicity, consistency, isolation, durability) transactions across multiple documents. Single record atomicity is possible for lots of applications with appropriate schema design. However, there are still many applications that may demand ACID across multiple records. Further, MongoDB included support for multi-document ACID transactions in the 4.0 release to address this drawback. As NoSQL data models primarily focused on optimizing for queries rather than reducing data duplication, therefore NoSQL databases can be larger than SQL databases.
+
+RedisConnection and RedisConnectionFactory
+RedisConnection and RedisConnectionFactory interfaces come under package “org.springframework.data.redis.connection”. We need to use these APIs of Spring Data Redis for working with connections to Redis. RedisConnection offers the core building block for Redis communication, as it handles the communication with the Redis back end. Active RedisConnection objects are created through RedisConnectionFactory.
+
+There are two widely used implementations of the RedisConnectionFactory interface which are based on the Jedis and Lettuce Redis clients.
+
+Lettuce Connector (LettuceConnectionFactory)
+Lettuce is a Netty-based open-source connector supported by Spring Data Redis through the org.springframework.data.redis.connection.lettuce package. The LettuceConnectionFactory is the Lettuce-based implementation of the Spring Data Redis ConnectionFactory. Lettuce is a high-performance Redis client written in Java. It is known for its asynchronous and thread-safe nature, making it suitable for reactive applications.
+
+In order to use Lettuce Connector, add the following dependency in the pom.xml file:
+
+<dependency>
+   <groupId>io.lettuce</groupId>
+   <artifactId>lettuce-core</artifactId>
+</dependency>
+
+Jedis Connector (JedisConnectionFactory)
+Jedis is a community-driven connector supported by the Spring Data Redis module through the org.springframework.data.redis.connection.jedis package. In the context of Spring Data Redis, the Jedis ConnectionFactory implementation is known as JedisConnectionFactory.
+
+In order to use Jedis Connector, add the following dependency in the pom.xml file:
+
+<dependency>
+   <groupId>redis.clients</groupId>
+   <artifactId>jedis</artifactId>
+</dependency>
+How to create a connection between application & Redis DB?
+Creating a connection between application & Redis DB is the two step process.
+
+1) Create an AppConfig class: Use RedisConnectionFactory(Interface) which has 2 implementations: JedisConnectionFactory, LettuceConnectionFactory (as per 2 drivers/connectors respectively). Lettuce is the latest driver.
+2) Provide details of redis host & port in application.properties file.
+
+Below is a sample code to create a connection in a configuration class: AppConfig. As aforementioned in the first point, there are two known connectors to connect to Redis DB: Jedis, Lettuce. Here we are using the Lettuce connector (Latest one) as shown below.
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import com.dev.springboot.redis.model.Employee;;
+
+@Configuration
+public class AppConfig {
+
+    //Creating Connection with Redis
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory();
+    }
+
+    //Creating RedisTemplate for Entity 'Employee'
+    @Bean
+    public RedisTemplate<String, Employee> redisTemplate(){
+        RedisTemplate<String, Employee> empTemplate = new RedisTemplate<>();
+        empTemplate.setConnectionFactory(redisConnectionFactory());
+        return empTemplate;
+    }
+}
+Spring Boot Redis CRUD Example
+Let’s consider an Employee entity to develop our example.
+
+Step#1: Create a new Spring Boot Starter Project using STS
+Let’s create a Spring Boot Starter project using STS. While creating Starter Project select ‘Spring Data Redis’, ‘Lombok’, and ‘Sprong Boot DevTools’ as starter project dependencies. Please note that like ‘Spring Data JPA’ in relational databases, we will use ‘Spring Data Redis’ here in case of redis database. Even If you don’t know how to create a Spring Boot Starter Project, Kindly visit our Internal Link. Even, if you are new to ‘Lombok’, kindly visit ‘How to configure Lombok‘ and to know all about it in detail.
+
+Step#2: Update application.properties
+For this example, updating the application.properties is optional. This is because the value of below properties s internally configured by Redis by default.
+
+spring.redis.host=localhost
+spring.redis.port=6379
+
+Step#3: Create a Config class as AppConfig.java
+This class will work as a configuration class, just to create a DB connection between our application and Redis DB.
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import com.dev.springboot.redis.model.Employee;;
+
+@Configuration
+public class AppConfig {
+
+   //Creating Connection with Redis
+   @Bean
+   public RedisConnectionFactory redisConnectionFactory() {
+       return new LettuceConnectionFactory();
+   }
+
+   //Creating RedisTemplate for Entity 'Employee'
+   @Bean
+   public RedisTemplate<String, Employee> redisTemplate(){
+      RedisTemplate<String, Employee> empTemplate = new RedisTemplate<>();
+      empTemplate.setConnectionFactory(redisConnectionFactory());
+      return empTemplate;
+   }
+}
+Step#4: Create a model class as Employee.java
+Now create a model class Entity.java as below. For the simplicity, we have taken three fields of different data types here. Moreover, we don’t need to apply @Entity annotation to tell DB that this is an Entity because there is even no concept of Entity. But while using Redis concept, make sure that our model class should implement java.io.Serializable interface. 
+
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+//No @Entity concept here
+public class Employee implements Serializable {
+
+     private static final long serialVersionUID = -7817224776021728682L;
+
+     private Integer empId;
+     private String empName;
+     private Double empSalary;
+}
+Step#5: Create an Interface at DAO layer
+Let’s create an interface at DAO layer and declare the methods of CRUD operations. We will name it as IEmployeeDao.java.
+
+import java.util.Map;
+import com.dev.springboot.redis.model.Employee;
+
+public interface IEmployeeDao {
+
+    void saveEmployee(Employee emp);
+    Employee getOneEmployee(Integer id);
+    void updateEmployee(Employee emp);
+    Map<Integer, Employee> getAllEmployees();
+    void deleteEmployee(Integer id);
+    void saveAllEmployees(Map<Integer, Employee> map);
+
+}
+Step#6: Create an implementation class for Interface at DAO layer
+Let’s create EmployeeDaoImpl.java class and implement the methods from the interface IEmployeeDao.java as below. This is the class of our primary interest as it will have implementation of all methods. Here, we need to declare a variable of type HashOperations<String, Integer, Employee> as a HAS-A relation. It will help us to implement CRUD methods and reduce the coding efforts.
+
+import java.util.Map;
+import javax.annotation.Resource;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.stereotype.Repository;
+import com.dev.springboot.redis.model.Employee;
+
+@Repository
+public class EmployeeDaoImpl implements IEmployeeDao {
+
+    private final String hashReference= "Employee";
+
+    @Resource(name="redisTemplate")          // 'redisTemplate' is defined as a Bean in AppConfig.java
+    private HashOperations<String, Integer, Employee> hashOperations;
+
+    @Override 
+    public void saveEmployee(Employee emp) {
+        //creates one record in Redis DB if record with that Id is not present
+        hashOperations.putIfAbsent(hashReference, emp.getEmpId(), emp);
+    }
+
+    @Override
+    public void saveAllEmployees(Map<Integer, Employee> map) {
+        hashOperations.putAll(hashReference, map);
+    }
+
+    @Override
+    public Employee getOneEmployee(Integer id) {
+       return hashOperations.get(hashReference, id);
+    }
+
+    @Override
+    public void updateEmployee(Employee emp) {
+       hashOperations.put(hashReference, emp.getEmpId(), emp);
+    }
+
+    @Override
+    public Map<Integer, Employee> getAllEmployees() {
+       return hashOperations.entries(hashReference);
+    }
+
+    @Override
+    public void deleteEmployee(Integer id) {
+       hashOperations.delete(hashReference, id);
+    }
+}
+How to test the implemented methods?
+In order to test the functionality of methods, we will create a Runner class that will implement CommandLineRunner.
+
+Step#1 : Create a Runner class to test all the methods
+Now create a Runner class and test all methods that we defined in EmployeeDaoImpl.java class.
+
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import com.dev.springboot.redis.dao.IEmployeeDao;
+import com.dev.springboot.redis.model.Employee;
+
+@Component
+public class RedisOpertionsRunner implements CommandLineRunner {
+
+    @Autowired
+    private IEmployeeDao empDao;
+
+    @Override
+    public void run(String... args) throws Exception {
+
+           //saving one employee
+       empDao.saveEmployee(new Employee(500, "Emp0", 2150.0));
+
+          //saving multiple employees
+       empDao.saveAllEmployees(
+            Map.of( 501, new Employee(501, "Emp1", 2396.0),
+                    502, new Employee(502, "Emp2", 2499.5),
+                    503, new Employee(503, "Emp4", 2324.75)
+                  )
+       );
+
+         //modifying employee with empId 503
+       empDao.updateEmployee(new Employee(503, "Emp3", 2325.25));
+
+         //deleting employee with empID 500
+       empDao.deleteEmployee(500);
+
+        //retrieving all employees
+       empDao.getAllEmployees().forEach((k,v)-> System.out.println(k +" : "+v));
+
+        //retrieving employee with empID 501
+       System.out.println("Emp details for 501 : "+empDao.getOneEmployee(501));
+    }
+}
+Step#2 : Start Redis Server
+In order to test the implemented method, we need to start the Redis Server.
+
+Step#3 : Run Spring Boot Project
+Right Click on the project, select Run As -> Spring Boot Project.
+
+Step#4 : Check the output
+Below is the final output after including all operations. However, we can test individual methods separately by commenting other methods.
+
+503 : Employee(empId=503, empName=Emp3, empSalary=2325.25)
+501 : Employee(empId=501, empName=Emp1, empSalary=2396.0)
+502 : Employee(empId=502, empName=Emp2, empSalary=2499.5)
+Emp details for 501 : Employee(empId=501, empName=Emp1, empSalary=2396.0)
